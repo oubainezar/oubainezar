@@ -88,6 +88,7 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
             });
         }
         else if(operation == "s"){
+            //ملاحظة: لقد استخدمت هذا الإستعلام نظرا لأن استعلام ربط ثلاثة جداول يثوم بإرجاع مصفوفة فارغة
             dataBase.all(`SELECT * FROM students JOIN membership ON students.student_id = membership.student_id
             WHERE students.student_id = ${student_id}
             `, (err, data)=>{
