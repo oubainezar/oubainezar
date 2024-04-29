@@ -60,7 +60,7 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                 })
                 return console.log('you must enter only characters.')
             }
-            dataBase.all(`SELECT student_id FROM students WHERE student_id = "${id1}"`,(err, id_student)=>{
+            dataBase.get(`SELECT student_id FROM students WHERE student_id = "${id1}"`,(err, id_student)=>{
                 if(err) {
                     rl.close();
                     dataBase.close(err=>{
@@ -79,7 +79,7 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                             })
                             return console.log('you must enter only characters.')
                         }
-                        dataBase.all(`SELECT lesson_id FROM lessons WHERE lesson_id = "${id_lesson}"`,(err, id2)=>{
+                        dataBase.get(`SELECT lesson_id FROM lessons WHERE lesson_id = "${id_lesson}"`,(err, id2)=>{
                             if(err) {
                                 rl.close();
                                 dataBase.close(err=>{
@@ -90,6 +90,7 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                             console.log(err.message);
                         }
                             if(id2){
+                            
                                 dataBase.run(`INSERT INTO membership(student_id, lesson_id) VALUES(${id_student[0].student_id}, ${id2[0].lesson_id})`, err=>{
                                     if(err){
                                         rl.close();
@@ -102,18 +103,32 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                                     rl.close();
                                     return console.log('operation accomplished successfully.')
                                 });
+                            
+                                
+                                
                             }
                             else{
-                                rl.close()
-                                return console.log("the lesson ID not found.");
+                                rl.close();
+                                dataBase.close(err=>{
+                                    if(err) return console.log(err.message);
+                                    else return console.log('The dataBase has been closed.');
+                                })
+                                return console.log("The lesson ID not found")
                             }
+                            
 
                         })
                     })
                 }
                 else{
-                    return console.log('the ID of student not found.')
+                    rl.close();
+                    dataBase.close(err=>{
+                        if(err) return console.log(err.message);
+                        else return console.log('The dataBase has been closed.');
+                    })
+                    return console.log("The student ID not found")
                 }
+                
             });
         })
     }
@@ -400,6 +415,9 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                 }
                 
             });
+        }
+    });
+});
         }
     });
 });
