@@ -418,6 +418,3 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
         }
     });
 });
-        
-    });
-});
