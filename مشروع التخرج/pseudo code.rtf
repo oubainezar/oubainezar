@@ -1,79 +1,58 @@
-** Import the necessary modules
--Import sqlite3.
--Import readline.
+- Import the required modules: sqlite3, readline.
 
-** Create a readline interface for taking user input
--Create readline interface
+- Define an array of valid operations: ['a', 'd', 's', 'u', 'r'].
 
-** Define the available operations
--Define operations array
-**Connect to SQLITE dataBase.
--Connect to school.db database
+- Create a readline interface to take user input.
 
-** Check if required tables exist, if not, create them
--Check if tables students, lessons, and membership exist.
--If any of them doesn't exist:
-    -Create students table.
-   -Create lessons table.
-    -Create membership table.
+- Create a new sqlite database instance, connecting to "school.db".
 
-** Ask user for the operation they want to perform
--Ask user for operation: a (add), d (delete), u (update), or s (show).
+- Check if the required tables (students, lessons, membership) exist in the database:
+    - If not, create them.
 
-** Handle user input
--If operation is not in operations array:
-    -Close readline interface.
-    -Close database connection.
-    -Log "operation not found."
--Else:
-    -Ask user for student ID.
+Prompt the user to choose an operation:
+    - If the chosen operation is not in the list of valid operations, close the readline interface and the database connection, then log "Operation not found" and exit.
 
-    ** Handle adding a student
-    -If operation is "a":
-        -Ask user for student details (name, family name, age, class, registration date).
-        -Insert student details into students table.
-        -Ask user for lesson ID and name.
-        -Insert lesson details into lessons table.
-        -Insert membership details into membership table.
+    - If the chosen operation is 'r':
+        - Prompt the user to enter the name of the student.
+        - Check if the name is valid (contains only characters).
+        - Retrieve the student's ID from the database based on the entered name.
+        - Prompt the user to enter the name of the lesson.
+        - Check if the lesson name is valid (contains only characters).
+        - Retrieve the lesson's ID from the database based on the entered name.
+        - Insert a new record into the membership table linking the student and lesson IDs.
 
-    ** Handle deleting a student.
-    -Else if operation is "d":
-        -Check if student exists in students table.
-        -If exists:
-            -Delete student from students table.
-            -Close readline interface.
-            -Close database connection.
-            -Log "operation accomplished successfully."
-        -Else:
-            -Close readline interface.
-            -Close database connection.
-            -Log "student ID not found."
 
-    ** Handle updating a student
-    -Else if operation is "u":
-        -Check if student exists in students table.
-        -If exists:
-            -Ask user for new student details (name, family name, age, class, registration date).
-            -Update student details in students table.
-            -Close readline interface.
-            -Close database connection.
-            -Log "operation accomplished successfully."
-        Else:
-            Close readline interface.
-            Close database connection.
-            Log "student ID not found."
+    - If the chosen operation is 'a':
+        - Prompt the user to enter the student's ID.
+        - Check if the entered ID is valid (a number).
+        - Prompt the user to enter the student's name, family name, age, class, and registration date.
+        - Check if the entered values are valid (name and family name contain only characters, age is a number between 0 and 100, class is a number).
+        - Insert a new record into the students table with the entered information.
+        - Prompt the user to enter the lesson ID and name.
+        - Check if the entered ID is valid (a number and not the same as the student ID).
+        - Check if the entered name is valid (contains only characters).
+        - Insert a new record into the lessons table with the entered ID and name.
 
-    ** Handle showing student information.
-    Else:
-        -Query database to get student information.
-        -If student information is found:
-            -Close readline interface.
-            -Log student information.
-        -Else:
-            -Close readline interface.
-            -Log "student ID not found."
-**close the readline.
--Close readline interface.
 
-**in the end close the dataBase.
--Close database connection.
+    - If the chosen operation is 'd':
+        - Prompt the user to enter the student's ID.
+        - Check if the entered ID is valid (a number).
+        - Delete the student record from the students table based on the entered ID.
+
+
+    - If the chosen operation is 'u':
+        - Prompt the user to enter the student's ID.
+        - Check if the entered ID is valid (a number).
+        - Prompt the user to enter the new name, family name, age, class, and registration date.
+        - Check if the entered values are valid (name and family name contain only characters, age is a number between 0 and 100, class is a number).
+        - Update the student's record in the students table with the entered information.
+
+
+    - If the chosen operation is 's':
+        - Prompt the user to enter the student's ID.
+        - Check if the entered ID is valid (a number).
+        - Retrieve the student's information from the database based on the entered ID and log it.
+
+
+
+    - Close the readline interface and the database connection.

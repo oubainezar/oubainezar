@@ -10,7 +10,8 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-const operations = ['a', 'd', 's', 'u'];
+//لقد أضفت عملية خامسة وهي تسجيل الطالب بالدروس
+const operations = ['a', 'd', 's', 'u', 'r'];
 const dataBase = new sqlite.Database("./school.db", err=>{
     if(err) return console.log(err.message);
 })
@@ -40,14 +41,81 @@ dataBase.get('SELECT name FROM  sqlite_master WHERE type = "table" AND name = "l
     }
 })
 
-rl.question("Please choose the method you want to do this\n*To add a student, press the letter a\n*To delete a student, press the letter d\n*To modify a student’s information, press the letter u\n*To view a student's information, click on the letter s\n----> ", (operation) => {
-    if(!operations.includes(operation)){
+rl.question("Please choose the method you want to do this\n*To add a student, press the letter a\n*To delete a student, press the letter d\n*To modify a student’s information, press the letter u\n*To view a student's information, click on the letter s\n*To register the student for lessons, click on the letter r\n-------->  ", (operation) => {
+    if(!operations.includes(operation.toLowerCase())){
         rl.close();
-        console.log("operation not found.");
         dataBase.close(err=>{
             if(err) return console.log(err.message);
             else return console.log("The database has been closed.");
         });
+        return console.log("operation not found.");
+    }
+    if(operation == "r"){
+        rl.question('Enter the name of student: ', name=>{
+            if(!isNaN(name)){
+                rl.close();
+                dataBase.close(err=>{
+                    if(err) return console.log(err.message);
+                    else return console.log("The dataBase has been closed.")
+                })
+                return console.log('you must enter only characters.')
+            }
+            dataBase.all(`SELECT student_id FROM students WHERE name = "${name}"`,(err, id)=>{
+                if(err) {
+                    rl.close();
+                    dataBase.close(err=>{
+                        if(err) return console.log(err.message);
+                        else return console.log('The dataBase has been closed.')
+                    })
+                    return console.log(err.message);
+                }
+                else if(id){
+                    rl.question('Enter the name of lesson: ', lesson_name=>{
+                        if(!isNaN(lesson_name)){
+                            rl.close();
+                            dataBase.close(err=>{
+                                if(err) return console.log(err.message);
+                                else return console.log("The dataBase has been closed.")
+                            })
+                            return console.log('you must enter only characters.')
+                        }
+                        dataBase.all(`SELECT lesson_id FROM lessons WHERE lesson_name = "${lesson_name}"`,(err, id2)=>{
+                            if(err) {
+                                rl.close();
+                                dataBase.close(err=>{
+                                if(err) return console.log(err.message);
+                                else return console.log('The dataBase has been closed.')
+
+                            })
+                            console.log(err.message);
+                        }
+                            if(id2){
+                                dataBase.run(`INSERT INTO membership(student_id, lesson_id) VALUES(${id[0].student_id}, ${id2[0].lesson_id})`, err=>{
+                                    if(err){
+                                        rl.close();
+                                        dataBase.close(err=>{
+                                            if(err) return console.log(err.message);
+                                            else return console.log('The dataBase has been closed.');
+                                        })
+                                        return console.log(err.message);
+                                    }
+                                    rl.close();
+                                    return console.log('operation accomplished successfully.')
+                                });
+                            }
+                            else{
+                                rl.close()
+                                return console.log("the lesson name not found.");
+                            }
+
+                        })
+                    })
+                }
+                else{
+                    return console.log('the name of student not found.')
+                }
+            });
+        })
     }
     rl.question("Enter the student ID: ", (student_id)=>{
         if(isNaN(student_id)){
@@ -107,59 +175,47 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                                         return console.log(err.message);
                                     }
                                 });
-                                rl.question('Enter the lesson ID: ', (lesson_id)=>{
-                                    if(isNaN(lesson_id) && lesson_id == student_id){
-                                        rl.close();
-                                        dataBase.close(err=>{
-                                            if(err) return console.log(err.message);
-                                            else return console.log("The database has been closed.");
-                                        });
-                                        return console.log("please enter only numbers or change the ID.");
-                                    }
-                                    rl.question('Enter the name of lesson: ', (lesson_name)=>{
-                                        if(!isNaN(lesson_name)){
+                                    rl.question('Enter the lesson ID: ', (lesson_id)=>{
+                                        //لا يمكن أن يكون رقم المعرف الخاص بالجدول الطلاب هو نفسه رقم المعرف الخاص بجدول الدروس
+                                        if(isNaN(lesson_id) || lesson_id == student_id){
                                             rl.close();
                                             dataBase.close(err=>{
                                                 if(err) return console.log(err.message);
                                                 else return console.log("The database has been closed.");
                                             });
-                                            return console.log("please enter only characters.");
+                                            return console.log("please enter only numbers or change the ID.");
                                         }
-                                        dataBase.run(`INSERT INTO lessons(lesson_id, lesson_name) VALUES(${lesson_id}, "${lesson_name}")`, err=>{
-                                            if(err){
+                                        rl.question('Enter the name of lesson: ', (lesson_name)=>{
+                                            if(!isNaN(lesson_name)){
                                                 rl.close();
                                                 dataBase.close(err=>{
                                                     if(err) return console.log(err.message);
                                                     else return console.log("The database has been closed.");
                                                 });
-                                                return console.log(err.message);
+                                                return console.log("please enter only characters.");
                                             }
-                                        })
-                                        dataBase.run(`INSERT INTO membership(student_id, lesson_id) VALUES(${student_id}, ${lesson_id})`, err=>{
-                                            if(err) {
-                                                rl.close();
-                                                dataBase.close(err=>{
-                                                    if(err) return console.log(err.message);
-                                                    else return console.log("The database has been closed.");
-                                                });
-                                                return console.log(err.message);
-                                            }
-                                            else{
-                                                rl.close();
-                                                dataBase.close(err=>{
-                                                    if(err) return console.log(err.message);
-                                                    else return console.log("The database has been closed.");
-                                                });
-                                                return console.log("operation accomplished successfully."); 
-                                            }
+                                            dataBase.run(`INSERT INTO lessons(lesson_id, lesson_name) VALUES(${lesson_id}, "${lesson_name}")`, err=>{
+                                                if(err){
+                                                    rl.close();
+                                                    dataBase.close(err=>{
+                                                        if(err) return console.log(err.message);
+                                                        else return console.log("The database has been closed.");
+                                                    });
+                                                    return console.log(err.message);
+                                                }
+                                                console.log('operation accomplished successfully.')
+                                            })
+                                            
                                         });
                                     });
-                                });
+                                    
+                                
+                                })
+                                
                             });
                         });
                     });
                 });
-            });
         }
         else if(operation == "d"){
             dataBase.get(`SELECT * FROM students WHERE student_id = ${student_id}`, (err, row)=>{
