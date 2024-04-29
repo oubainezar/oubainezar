@@ -172,7 +172,7 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                             }
                             rl.question('Enter the age of student: ', (age)=>{
                                 //عمر الطالب يجب أن يكون مابين 5 و 65 سنة
-                                if(isNaN(age) || age>=65 || age<=5){
+                                if(isNaN(age) || age>65 || age<5){
                                     rl.close();
                                     dataBase.close(err=>{
                                         if(err) return console.log(err.message);
@@ -336,7 +336,7 @@ rl.question("Please choose the method you want to do this\n*To add a student, pr
                                 return console.log("please enter only characters.");
                             }
                             rl.question("Enter the new age: ", newAge =>{
-                                if(isNaN(newAge) && newAge <= 5 || newAge >= 65){
+                                if(isNaN(newAge) && newAge < 5 || newAge > 65){
                                     rl.close();
                                     dataBase.close(err=>{
                                         if(err) return console.log(err.message);
