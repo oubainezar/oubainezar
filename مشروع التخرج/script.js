@@ -251,7 +251,11 @@ function addStudent() {
     }
     function askMounth(year, student_id, name, familyname, age, clas){
         rl.question('------->*Enter the Mounth of registration: ', mounth=>{
-            if(isNaN(mounth) || mounth > 12 || mounth < 1){
+            if(isNaN(mounth)){
+                console.log('please enter only numbers.');
+                askMounth(year, student_id, name, familyname, age, clas);
+            }
+            else if(mounth > 12 || mounth < 1){
                 console.log('The registration mounth must be between 1 and 12.');
                 askMounth(year, student_id, name, familyname, age, clas);
             }
