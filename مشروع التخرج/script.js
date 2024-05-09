@@ -1,5 +1,3 @@
-//ملاحظة لقد إستبدلت العربية بالإنجليزية لأنها لا تتوافق مع node js
-
 const sqlite = require('sqlite3').verbose();
 const readline = require('readline');
 
@@ -512,6 +510,7 @@ function deleteStudent() {
                 });
                 return console.log(err.message);
             }else if(data.length > 0){
+                console.log('################# Students #########################')
                 console.log(data);
                 isClearAll();
             }else{
@@ -617,6 +616,7 @@ function updateStudent() {
                 });
                 return console.log(err.message);
             }else if(data.length > 0){
+                console.log('################# Students #########################')
                 console.log(data);
                 askStudentID();
             }else{
@@ -755,9 +755,7 @@ function updateStudent() {
                 regDate = `${day}/${mounth}/${year}`;
                 update(student_id, name, familyname, age, clas, regDate);
             }
-        })
-        
-        
+        }) 
     }
     function askMounth(year, student_id, name, familyname, age, clas){
         rl.question('-------->*Enter the New Mounth of registration: ', mounth=>{
@@ -870,6 +868,7 @@ function viewStudentInformation() {
                             return console.log(err.message);
                         }
                         else if(data.length > 0){
+                            
                             console.log(data);
                             askContinue();
                         }
@@ -901,6 +900,7 @@ function viewStudentInformation() {
                 });
                 return console.log(err.message);
             }else if(data.length > 0){
+                console.log('################# Students #########################')
                 console.log(data);
                 console.log('For more information about a specific student, enter his or her ID,')
                 askStudentID();
@@ -1168,6 +1168,7 @@ function deleteLesson() {
                 return console.log(err.message);
 
             }else if(data.length > 0){
+                console.log('################# Lessons #########################')
                 console.log(data);
                 clearAll();
             }else{
@@ -1364,6 +1365,7 @@ function viewLessonInformation(){
                 });
                 return console.log(err.message);
             }else if(data.length > 0){
+                console.log('################# Lessons #########################')
                 console.log(data);
                 askLessonID();
                 
@@ -1460,6 +1462,7 @@ function updateLesson(){
                 });
                 return console.log(err.message);
             }else if(data.length > 0){
+                console.log('################# Lessons #########################')
                 console.log(data);
                 askLessonID();
             }else{
@@ -1594,7 +1597,7 @@ function cancelStudentRegistration(){
             return console.log('No student registered for any lesson');
         }
         else{ 
-            console.log('############### These are all students registered for lessons.#######################')
+            console.log('####################### These are all students registered for lessons ##############################')
             console.log(data);
             askStudentID();
         }
