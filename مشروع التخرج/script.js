@@ -92,7 +92,7 @@ function executeOperation(operation) {
     }
 }
 function InputValidation(input){
-    const pattern = ['²', '&', "'", '(', '-', '_', 'ç', 'à', ')', '=', '/', '*', '-', '+', '.', '~', '#', '{', '}', '[', ']', '|', '@', '$', '^', '!', '<', '>'];
+    const pattern = ['²', '&', "'", '(', '-', '_', 'ç', 'à', ')', '=', '/', '*', '-', '+', '.', '~', '#', '{', '}', '[', ']', '|', '@', '$', '^', '!', '<', '>', '"'];
     for(i of input){
         if(pattern.includes(i)){
             return true;
