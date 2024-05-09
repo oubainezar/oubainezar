@@ -1,5 +1,6 @@
 //ملاحظة لقد إستبدلت العربية بالإنجليزية لأنها لا تتوافق مع node js
 
+
 const sqlite = require('sqlite3').verbose();
 const readline = require('readline');
 
@@ -1594,6 +1595,7 @@ function cancelStudentRegistration(){
             return console.log('No student registered for any lesson');
         }
         else{ 
+            console.log('############### These are all students registered for lessons.#######################')
             console.log(data);
             askStudentID();
         }
@@ -1618,10 +1620,11 @@ function cancelStudentRegistration(){
                     }else if(row){
                         askLessonID(student_id);
                     }else{
-                        console.log('student ID not found.');
-                        askStudentID();
+                        console.log('This student is not registered in any lesson or student ID not found');
+                        askContinue();
                     }
                 })
+                
             }
         })
     }
@@ -1641,10 +1644,24 @@ function cancelStudentRegistration(){
                         });
                         return console.log(err.message);
                     }else if(row){
-                        cancelRegistration(student_id, lesson_id);
+                        dataBase.get(`SELECT * FROM membership WHERE lesson_id = ${lesson_id} AND student_id = ${student_id}`, (err, row)=>{
+                            if(err){
+                                rl.close();
+                                dataBase.close(err=>{
+                                    if(err) return console.log(err.message);
+                                    else return console.log("The database has been closed.");
+                                });
+                                return console.log(err.message);
+                            }else if(row){
+                                cancelRegistration(student_id, lesson_id);
+                            }else{
+                                console.log('This student is not registered for this lesson.');
+                                askLessonID(student_id);
+                            }
+                        })
                     }else{
-                        console.log('student ID not found.');
-                        askLessonID(student_id);
+                        console.log('No students registered for this lesson or lesson ID not found.');
+                        askContinue();
                     }
                 })
             }
