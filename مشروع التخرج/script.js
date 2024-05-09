@@ -1,6 +1,5 @@
 //ملاحظة لقد إستبدلت العربية بالإنجليزية لأنها لا تتوافق مع node js
 
-
 const sqlite = require('sqlite3').verbose();
 const readline = require('readline');
 
@@ -231,7 +230,7 @@ function addStudent() {
                 askDay(year, mounth, student_id, name, familyname, age, clas);
             }
             else if(day == 31 && mounth%2 !== 0 && mounth !== 2){
-                console.log(`the ${mounth} has only 30 days.`);
+                console.log(`This mounth has only 30 days..`);
                 askDay(year, mounth, student_id, name, familyname, age, clas);
             }
             else if(day > 31){
@@ -745,7 +744,7 @@ function updateStudent() {
                 askDay(year, mounth, student_id, name, familyname, age, clas);
             }
             else if(day == 31 && mounth%2 !== 0 && mounth !== 2){
-                console.log(`the ${mounth} has only 30 days!`);
+                console.log(`This mounth has only 30 days!`);
                 askDay(year, mounth, student_id, name, familyname, age, clas);
             }
             else if(day>28 && year%4 !== 0){
