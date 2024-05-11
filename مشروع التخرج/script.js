@@ -1,3 +1,5 @@
+
+
 const sqlite = require('sqlite3').verbose();
 const readline = require('readline');
 
@@ -28,17 +30,15 @@ function initializeTables() {
         if (err) console.log(err.message);
     });
     dataBase.run(
-        `CREATE TABLE membership(
-           student_id INTEGER NOT NULL,  
-           lesson_id INTEGER NOT NULL,
-           PRIMARY KEY(student_id, lesson_id),
-           CONSTRAINT cons_student
-               FOREIGN KEY(student_id) REFERENCES students(student_id)
-               ON DELETE CASCADE ON UPDATE CASCADE,
-           CONSTRAINT cons_lesson
-               FOREIGN KEY(lesson_id) REFERENCES lessons(lesson_id)
-               ON DELETE CASCADE ON UPDATE CASCADE
-        )`, err => {
+        `
+            CREATE TABLE membership(
+                student_id INTEGER,
+                lesson_id INTEGER,
+                PRIMARY KEY(student_id, lsson_id),
+                FOREIGN KEY(student_id) REFERENCES students(student_id),
+                FOREIGN KEY(lesson_id) REFERENCES lessons(lesson_id)
+            )
+        `, err => {
             if (err) console.log(err.message);
         });
 }
@@ -126,21 +126,7 @@ function addStudent() {
                 return console.log(err.message);
             }
             else if(!row){
-                dataBase.get(`SELECT * FROM lessons WHERE lesson_id = ${student_id}`, row2=>{
-                    if(err){
-                        rl.close();
-                        dataBase.close(err=>{
-                            if(err) return console.log(err.message);
-                            else return console.log("The database has been closed.");
-                        });
-                        return console.log(err.message);
-                    }else if(!row2){
-                        askStudentName(student_id);
-                    }else{
-                        console.log('There is lesson has this ID.');
-                        askStudentID();
-                    }
-                })
+                askStudentName(student_id);
             }
             else{
                 console.log('This ID already exists.');
@@ -340,7 +326,7 @@ function addLessons(){
         })
     }
     function checkLesson(lesson_id){
-        dataBase.get(`SELECT * FROM students WHERE student_id = ${lesson_id}`, (err, data)=>{
+        dataBase.get(`SELECT * FROM lessons WHERE lesson_id = ${lesson_id}`, (err, data)=>{
             if(err){
                 rl.close();
                 dataBase.close(err=>{
@@ -350,29 +336,14 @@ function addLessons(){
                 return console.log(err.message);
             }
             else if(data){
-                console.log('There is a student who has this ID, please change it');
+                console.log('There is a lesson who has this ID, please change it');
                 askLessonID();
             }
             else{
-                dataBase.get(`SELECT * FROM lessons WHERE lesson_id = ${lesson_id}`, (err, data)=>{
-                    if(err){
-                        rl.close();
-                        dataBase.close(err=>{
-                            if(err) return console.log(err.message);
-                            else return console.log("The database has been closed.");
-                        });
-                        return console.log(err.message);
-                    }
-                    else if(data){
-                        console.log('There is a lesson who has this ID, please change it');
-                        askLessonID();
-                    }
-                    else{
-                        askLessonName(lesson_id);
-                    }
-                })
+                askLessonName(lesson_id);
             }
         })
+            
     }
     function askLessonName(lesson_id){
         rl.question('Enter the name of lesson: ', (lesson_name)=>{
