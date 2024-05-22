@@ -36,7 +36,7 @@ function buildHuffmanTree(text) {
 
     // Count frequency of each character in the text
     for (let char of text) {
-        counter[char] = (counter[char] || 0) + 1;
+        counter[char] = (counter[char] && 1) + 1;
     }
 
     // Create a leaf node for each character and add it to the priority queue
