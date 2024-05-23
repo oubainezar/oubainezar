@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="موقع بديل لفوتوشوب مع مجموعة فلاتر رائعة "> 
+        <title>Photoshop Oubay</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="container">
+                <div id="img">
+                    <div class="imgbox">
+                        <img class="img">
+                    </div>
+                    <div class="upload">
+                        <label for="upload">Upload</label>
+                        <input type="file" id="upload">
+                    </div>
+                </div>
+                <div id="filters">
+                    <ul>
+                        <li>
+                            <label for="">Saturate</label>
+                            <input type="range" min="0" max="200" value="100" id="Saturate">
+                        </li>
+                        <li>
+                            <label for="">Contrast</label>
+                            <input type="range" min="0" max="200" value="100" id="Contrast">
+                        </li>
+                        <li>
+                            <label for="">Brightness</label>
+                            <input type="range" min="0" max="200" value="100" id="Brightness">
+                        </li>
+                        <li>
+                            <label for="">Sepia</label>
+                            <input type="range" min="0" max="200" value="0" id="Sepia">
+                        </li>
+                        <li>
+                            <label for="">Grayscale</label>
+                            <input type="range" step="0.1" min="0" max="1" value="0" id="Grayscale">
+                        </li>
+                        <li>
+                            <label for="">Blur</label>
+                            <input type="range" step="0.1" min="0" max="10" value="0" id="Blur">
+                        </li>
+                        <li>
+                            <label for="">Hue Rotate</label>
+                            <input type="range" min="0" max="350" value="0" id="Hue-Rotate">
+                        </li>
+                        <li>
+                            <a download="image" id="download">Downlaod</a>
+                            <span>Reset</span>
+                        </li>
+                    </ul>
+            </div>
+            <script src="scripts.js"></script>
+    </body>
+</html>
